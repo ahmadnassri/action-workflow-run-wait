@@ -40,4 +40,10 @@ export default async function ({ token, delay, timeout }) {
     // get the data again
     result = await runs(octokit, flows)
   }
+
+  for (const run of result) {
+    core.info(`${run.id}: ${run.name} => ${run.conclusion || 'pending'}`)
+  }
+
+  core.info('all runs completed successfully!')
 }
