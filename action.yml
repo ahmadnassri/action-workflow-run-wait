@@ -1,5 +1,5 @@
-name: Terraform Pull Request Report Generator
-description: Updates Pull Requests with visual diff of Terraform Plan changes
+name: Workflow Run Wait
+description: wait for all `workflow_run` required workflows to be successful
 
 branding:
   color: blue
