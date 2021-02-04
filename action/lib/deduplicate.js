@@ -19,19 +19,19 @@ export default async function (octokit) {
   })
 
   // find any instances of the same workflow
-  workflow_runs
+  const cancellable = workflow_runs
     // filter to relevant runs
     .filter(run => run.workflow_id === workflow_id && run.head_sha === sha)
     // pick relevant properties
     .map(run => ({ id: run.id, name: run.name, created_at: run.created_at }))
     // sort
     .sort(run => (a, b) => new Date(b.created_at) - new Date(a.created_at))
-    // remove last one
-    .pop()
 
-  // sort
-  for (const run of workflow_runs) {
-    core.info(`${run.id}: ${run.name} => ${run.created_at}`)
+  // remove last one
+  cancellable.pop()
+
+  for (const run of cancellable) {
+    core.info(`${run.id}: ${run.name} => cancel`)
 
     await octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
       ...github.context.repo,
