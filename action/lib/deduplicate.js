@@ -14,7 +14,7 @@ export default async function (octokit) {
   })
 
   // get current run of this workflow
-  const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs', {
+  const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs?status=queued', {
     ...github.context.repo
   })
 
