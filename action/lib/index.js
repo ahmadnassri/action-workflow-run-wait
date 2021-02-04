@@ -1,6 +1,7 @@
 // packages
 import core from '@actions/core'
 import github from '@actions/github'
+import deduplicate from './deduplicate.js'
 
 import runs from './runs.js'
 import workflows from './workflows.js'
@@ -9,15 +10,17 @@ import workflows from './workflows.js'
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 export default async function ({ token, delay, timeout }) {
+  let timer = 0
+
   // init octokit
   const octokit = github.getOctokit(token)
 
-  let timer = 0
+  await deduplicate(octokit)
 
-  const flows = await workflows(octokit)
+  const dependencies = await workflows(octokit)
 
   // check runs
-  let result = await runs(octokit, flows)
+  let result = await runs(octokit, dependencies)
 
   while (result.find(run => run.conclusion !== 'success')) {
     timer += delay
@@ -38,7 +41,7 @@ export default async function ({ token, delay, timeout }) {
     await sleep(delay)
 
     // get the data again
-    result = await runs(octokit, flows)
+    result = await runs(octokit, dependencies)
   }
 
   for (const run of result) {

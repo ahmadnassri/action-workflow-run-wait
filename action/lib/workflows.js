@@ -7,24 +7,21 @@ export default async function (octokit) {
 
   // get workflow id from run id
   const { data: { workflow_id } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', { // eslint-disable-line camelcase
-    owner: 'hashtagpaid',
-    repo: 'template-api',
+    ...github.context.repo,
     run_id
   })
 
   // get the file name from the workflow
   const { data: { path } } = await octokit.request('GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}', {
-    owner: 'hashtagpaid',
-    repo: 'template-api',
+    ...github.context.repo,
     workflow_id
   })
 
   // get the workflow content
   const { data: { content } } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-    owner: 'hashtagpaid',
-    repo: 'template-api',
-    ref,
-    path
+    ...github.context.repo,
+    path,
+    ref
   })
 
   const { on: { workflow_run: { workflows } } } = yaml.parse(Buffer.from(content, 'base64').toString())

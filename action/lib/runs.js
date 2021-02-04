@@ -1,6 +1,6 @@
 import github from '@actions/github'
 
-export default async function (octokit, workflows) {
+export default async function (octokit, dependencies) {
   // extract sha
   const { sha } = github.context
 
@@ -10,7 +10,7 @@ export default async function (octokit, workflows) {
 
   return workflow_runs
     // filter to relevant runs
-    .filter(run => workflows.includes(run.name) && run.head_sha === sha)
+    .filter(run => dependencies.includes(run.name) && run.head_sha === sha)
     // pick properties
     .map(run => ({ id: run.id, name: run.name, conclusion: run.conclusion }))
 }
