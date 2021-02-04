@@ -1,0 +1,23 @@
+name: Terraform Pull Request Report Generator
+description: Updates Pull Requests with visual diff of Terraform Plan changes
+
+branding:
+  color: blue
+  icon: clock
+
+inputs:
+  github-token:
+    description: The GitHub token used to post comments on pull requests
+    default: ${{ github.token }}
+
+  timeout:
+    description: timeout before we stop trying (in milliseconds)
+    default: 30000
+
+  delay:
+    description: delay between status checks (in milliseconds)
+    default: 5000
+
+runs:
+  using: docker
+  image: docker://ghcr.io/ahmadnassri/action-workflow-run-wait

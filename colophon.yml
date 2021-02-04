@@ -1,0 +1,8 @@
+version: 2.0
+
+id: action-workflow-run-wait
+
+about:
+  title: "GitHub Action: Workflow Run Wait"
+  description: wait for all `workflow_run` required workflows to be successful
+  repository: ahmadnassri/action-workflow-run-wait
