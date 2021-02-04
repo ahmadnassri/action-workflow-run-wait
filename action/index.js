@@ -16,8 +16,8 @@ if (github.context.eventName !== 'workflow_run') {
 // parse inputs
 const inputs = {
   token: core.getInput('github-token', { required: true }),
-  delay: core.getInput('delay', { required: true }),
-  timeout: core.getInput('timeout', { required: true })
+  delay: Number(core.getInput('delay', { required: true })),
+  timeout: Number(core.getInput('timeout', { required: true }))
 }
 
 // error handler

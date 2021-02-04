@@ -23,6 +23,14 @@ export default async function ({ token, delay, timeout }) {
   let result = await runs(octokit, dependencies)
 
   while (result.find(run => run.conclusion !== 'success')) {
+    // exit early
+    const failed = result.find(run => run.conclusion === 'failure')
+
+    if (failed) {
+      core.setFailed(`${failed.id}: ${failed.name} failed`)
+      process.exit(1)
+    }
+
     timer += delay
 
     // time out!
