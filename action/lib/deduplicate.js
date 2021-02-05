@@ -14,14 +14,14 @@ export default async function (octokit) {
   })
 
   // get current run of this workflow
-  const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs?status=queued', {
+  const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs', {
     ...github.context.repo
   })
 
   // find any instances of the same workflow
   const cancellable = workflow_runs
     // filter to relevant runs
-    .filter(run => run.workflow_id === workflow_id && run.head_sha === sha)
+    .filter(run => ['in_progress', 'queued'].includes(run.status) && run.workflow_id === workflow_id && run.head_sha === sha)
     // pick relevant properties
     .map(run => ({ id: run.id, name: run.name, created_at: run.created_at }))
     // sort
