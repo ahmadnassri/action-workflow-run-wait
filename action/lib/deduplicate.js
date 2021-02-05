@@ -25,7 +25,7 @@ export default async function (octokit) {
     // pick relevant properties
     .map(run => ({ id: run.id, name: run.name, created_at: run.created_at }))
     // sort
-    .sort(run => (a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
 
   // remove last one
   cancellable.pop()
