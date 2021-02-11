@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 // packages
 import core from '@actions/core'
 import github from '@actions/github'
@@ -15,12 +17,33 @@ export default async function ({ token, delay, timeout }) {
   // init octokit
   const octokit = github.getOctokit(token)
 
-  await deduplicate(octokit)
+  // extract sha
+  const { sha, ref, runId: run_id } = github.context
 
-  const dependencies = await workflows(octokit)
+  core.debug(`sha: ${sha}`)
+  core.debug(`run.id: ${run_id}`)
+
+  // get workflow id from run id
+  const { data: { workflow_id } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
+    ...github.context.repo,
+    run_id
+  })
+
+  core.debug(`workflow_id: ${workflow_id}`)
+
+  // don't run this workflow twice for the same commit
+  await deduplicate({ octokit, workflow_id, run_id, sha })
+
+  // find all the dependencies
+  const dependencies = await workflows({ octokit, ref, workflow_id })
 
   // check runs
   let result = await runs(octokit, dependencies)
+
+  if (result.length === 0) {
+    core.info('no runs found for this workflow\'s dependencies')
+    process.exit(1)
+  }
 
   while (result.find(run => run.conclusion !== 'success')) {
     // exit early
