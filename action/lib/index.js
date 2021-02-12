@@ -18,7 +18,7 @@ export default async function ({ token, delay, timeout, sha }) {
   const octokit = github.getOctokit(token)
 
   // extract sha
-  const { ctx_sha, ref, runId: run_id } = github.context
+  const { ref, runId: run_id } = github.context
 
   core.debug(`sha: ${sha}`)
   core.debug(`run.id: ${run_id}`)
