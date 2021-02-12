@@ -1,4 +1,4 @@
-name: Workflow Run Wait Temp
+name: Workflow Run Wait
 description: wait for all `workflow_run` required workflows to be successful; used for tests, don't rely on it
 
 branding:
