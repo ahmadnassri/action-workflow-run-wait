@@ -5,10 +5,7 @@ import { inspect } from 'util'
 import core from '@actions/core'
 import github from '@actions/github'
 
-export default async function (octokit, dependencies) {
-  // extract sha
-  const { sha } = github.context
-
+export default async function (octokit, dependencies, sha) {
   const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs', { // eslint-disable-line camelcase
     ...github.context.repo
   })

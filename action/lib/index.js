@@ -11,14 +11,14 @@ import workflows from './workflows.js'
 // sleep function
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-export default async function ({ token, delay, timeout }) {
+export default async function ({ token, delay, timeout, sha }) {
   let timer = 0
 
   // init octokit
   const octokit = github.getOctokit(token)
 
   // extract sha
-  const { sha, ref, runId: run_id } = github.context
+  const { ctx_sha, ref, runId: run_id } = github.context
 
   core.debug(`sha: ${sha}`)
   core.debug(`run.id: ${run_id}`)
@@ -38,7 +38,7 @@ export default async function ({ token, delay, timeout }) {
   const dependencies = await workflows({ octokit, ref, workflow_id })
 
   // check runs
-  let result = await runs(octokit, dependencies)
+  let result = await runs(octokit, dependencies, sha)
 
   if (result.length === 0) {
     core.info('no runs found for this workflow\'s dependencies')
@@ -72,7 +72,7 @@ export default async function ({ token, delay, timeout }) {
     await sleep(delay)
 
     // get the data again
-    result = await runs(octokit, dependencies)
+    result = await runs(octokit, dependencies, sha)
   }
 
   for (const run of result) {

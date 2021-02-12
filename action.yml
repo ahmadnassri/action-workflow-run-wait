@@ -1,5 +1,5 @@
-name: Workflow Run Wait
-description: wait for all `workflow_run` required workflows to be successful
+name: Workflow Run Wait Temp
+description: wait for all `workflow_run` required workflows to be successful; used for tests, don't rely on it
 
 branding:
   color: blue
@@ -17,6 +17,10 @@ inputs:
   delay:
     description: delay between status checks (in milliseconds)
     default: 5000
+
+  sha:
+    description: SHA to use (defaults to github.sha)
+    default: ${{ github.sha }}
 
 runs:
   using: docker
