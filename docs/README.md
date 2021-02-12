@@ -68,3 +68,4 @@ jobs:
 | `github-token` | ❌        | `github.token` | The GitHub token used to call the GitHub API    |
 | `timeout`      | ❌        | `30000`        | timeout before we stop trying (in milliseconds) |
 | `delay`        | ❌        | `5000`         | delay between status checks (in milliseconds)   |
+| `sha`          | ❌        | `github.sha`   | Git SHA, if it's different from `github.sha`    |
