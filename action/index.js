@@ -22,14 +22,8 @@ const inputs = {
 }
 
 // error handler
-function errorHandler ({ message, stack, request }) {
+function errorHandler ({ message, stack }) {
   core.error(`${message}\n${stack}`)
-
-  // debugging for API calls
-  if (request) {
-    const { method, url, body, headers } = request
-    core.debug(`${method} ${url}\n\n${inspect(headers)}\n\n${inspect(body)}`)
-  }
 
   process.exit(1)
 }

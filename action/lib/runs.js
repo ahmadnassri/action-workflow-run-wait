@@ -17,7 +17,7 @@ export default async function (octokit, dependencies, sha) {
     .map(run => ({ id: run.id, name: run.name, conclusion: run.conclusion }))
 
   core.debug(`found ${runs.length} workflow runs of ${inspect(dependencies)}`)
-  core.debug(inspect(runs))
+  core.debug(inspect(runs.map(run => ({ id: run.id, name: run.name }))))
 
   return runs
 }
