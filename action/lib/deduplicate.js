@@ -37,7 +37,7 @@ export default async function ({ octokit, workflow_id, run_id, sha }) {
   const prime = cancellable.pop()
 
   core.debug(`determined ${prime.id} to be the prime run of this workflow`)
-  core.debug(inspect(prime.map(run => ({ id: run.id, name: run.name }))))
+  core.debug(inspect(prime))
 
   for (const run of cancellable) {
     core.info(`${run.id}: ${run.name} => canceling`)
