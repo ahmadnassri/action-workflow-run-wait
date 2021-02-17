@@ -31,6 +31,11 @@ export default async function ({ octokit, workflow_id, run_id, sha }) {
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
 
   core.debug(`found ${cancellable.length} cancellable runs of workflow ${workflow_id}`)
+
+  if (cancellable.length === 0) {
+    return
+  }
+
   core.debug(inspect(cancellable.map(run => ({ id: run.id, name: run.name }))))
 
   // exclude last one (i.e. the first running instance)
