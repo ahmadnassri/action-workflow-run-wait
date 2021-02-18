@@ -9,8 +9,8 @@ import main from './lib/index.js'
 
 // exit early
 if (github.context.eventName !== 'workflow_run') {
-  core.error('action triggered outside of a workflow_run')
-  process.exit(1)
+  core.warning('action triggered outside of a workflow_run')
+  process.exit(0)
 }
 
 // parse inputs
