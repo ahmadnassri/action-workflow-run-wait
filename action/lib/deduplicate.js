@@ -11,10 +11,11 @@ export default async function ({ octokit, workflow_id, run_id, sha }) {
   // get current run of this workflow
   const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs', {
     ...github.context.repo,
+    per_page: 100,
     workflow_id
   })
 
-  core.debug(`found ${workflow_runs.length} runs of workflow ${workflow_id}`)
+  core.info(`found ${workflow_runs.length} runs of workflow ${workflow_id}`)
   core.debug(inspect(workflow_runs.map(run => ({ id: run.id, name: run.name }))))
 
   // filter and sort
@@ -30,7 +31,7 @@ export default async function ({ octokit, workflow_id, run_id, sha }) {
     // sort
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
 
-  core.debug(`found ${cancellable.length} cancellable runs of workflow ${workflow_id}`)
+  core.info(`found ${cancellable.length} cancellable runs of workflow ${workflow_id}`)
 
   if (cancellable.length === 0) {
     return
@@ -41,7 +42,7 @@ export default async function ({ octokit, workflow_id, run_id, sha }) {
   // exclude last one (i.e. the first running instance)
   const prime = cancellable.pop()
 
-  core.debug(`determined ${prime.id} to be the prime run of this workflow`)
+  core.info(`determined ${prime.id} to be the prime run of this workflow`)
   core.debug(inspect(prime))
 
   for (const run of cancellable) {
