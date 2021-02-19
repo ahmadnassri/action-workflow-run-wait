@@ -50,7 +50,7 @@ export default async function ({ token, delay, timeout, sha }) {
     const failed = result.find(run => run.conclusion === 'failure')
 
     if (failed) {
-      core.setFailed(`${failed.id}: ${failed.name} failed`)
+      core.setFailed(`${failed.name}#${failed.id} => failed`)
       process.exit(1)
     }
 
@@ -63,7 +63,7 @@ export default async function ({ token, delay, timeout, sha }) {
     }
 
     for (const run of result) {
-      core.info(`${run.id}: ${run.name} => ${run.conclusion || 'pending'}`)
+      core.info(`${run.name}#${run.id} => ${run.conclusion || 'pending'}`)
     }
 
     core.info(`runs were not successful, or have not started, try again in ${delay}`)
@@ -76,7 +76,7 @@ export default async function ({ token, delay, timeout, sha }) {
   }
 
   for (const run of result) {
-    core.info(`${run.id}: ${run.name} => ${run.conclusion || 'pending'}`)
+    core.info(`${run.name}#${run.id} => ${run.conclusion || 'pending'}`)
   }
 
   core.info('all runs completed successfully!')
