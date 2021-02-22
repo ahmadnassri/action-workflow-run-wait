@@ -11,7 +11,7 @@ import workflows from './workflows.js'
 // sleep function
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-export default async function ({ token, delay, timeout, sha }) {
+export default async function ({ token, delay, timeout, sha, ignore }) {
   let timer = 0
 
   // init octokit
@@ -45,7 +45,10 @@ export default async function ({ token, delay, timeout, sha }) {
     process.exit(1)
   }
 
-  while (result.find(run => run.conclusion !== 'success')) {
+  const successful = ['success']
+  if (ignore) successful.push('cancelled')
+
+  while (result.find(run => !successful.includes(run.conclusion))) {
     // exit early
     const failed = result.find(run => run.conclusion === 'failure')
 

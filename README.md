@@ -49,11 +49,11 @@ However by itself, this doesn't quite work as expected.
 
 3.  Your workflow will trigger as many times as you have workflow dependencies
 
-    > *in the previous example, our `deploy` workflow, will run 3 times!*
+        > _in the previous example, our `deploy` workflow, will run 3 times!_
 
-All this makes the `workflow_run` event fundamentally broken for any advanced usage, this Action aims to remedy that.
+    All this makes the `workflow_run` event fundamentally broken for any advanced usage, this Action aims to remedy that.
 
-> ***Note**: See this [Community discussion](https://github.community/t/workflow-run-completed-event-triggered-by-failed-workflow/128001/5) for more info on the topic*
+    > ***Note**: See this [Community discussion](https://github.community/t/workflow-run-completed-event-triggered-by-failed-workflow/128001/5) for more info on the topic*
 
 </details>
 
@@ -79,12 +79,13 @@ jobs:
 
 ### Inputs
 
-| input          | required | default        | description                                     |
-|----------------|----------|----------------|-------------------------------------------------|
-| `github-token` | ❌        | `github.token` | The GitHub token used to call the GitHub API    |
-| `timeout`      | ❌        | `30000`        | timeout before we stop trying (in milliseconds) |
-| `delay`        | ❌        | `5000`         | delay between status checks (in milliseconds)   |
-| `sha`          | ❌        | `github.sha`   | Git SHA, if it's different from `github.sha`    |
+| input              | required | default        | description                                     |
+|--------------------|----------|----------------|-------------------------------------------------|
+| `github-token`     | ❌        | `github.token` | The GitHub token used to call the GitHub API    |
+| `timeout`          | ❌        | `30000`        | timeout before we stop trying (in milliseconds) |
+| `delay`            | ❌        | `5000`         | delay between status checks (in milliseconds)   |
+| `sha`              | ❌        | `github.sha`   | Git SHA, if it's different from `github.sha`    |
+| `ignore-cancelled` | ❌        | `false`        | ignore cancelled workflow runs                  |
 
 ----
 > Author: [Ahmad Nassri](https://www.ahmadnassri.com/) &bull;

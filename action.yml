@@ -18,6 +18,10 @@ inputs:
     description: delay between status checks (in milliseconds)
     default: 5000
 
+  ignore-cancelled:
+    description: ignore cancelled workflow runs
+    default: false
+
   sha:
     description: SHA to use (defaults to github.sha)
     default: ${{ github.sha }}
