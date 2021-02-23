@@ -20,9 +20,11 @@ export default async function ({ octokit, workflow_id, run_id }) {
   // filter and sort
   const cancellable = workflow_runs
     // filter to relevant runs
-    .filter(run => ['in_progress', 'queued'].includes(run.status))
+    .filter(run => ['in_progress', 'queued', 'completed'].includes(run.status))
     // filter to only runs for the same commit
     .filter(run => run.head_sha === sha)
+    // filter out unsuccessful completed runs (cancelled / failed)
+    .filter(run => (run.status !== 'completed') || (run.conclusion === 'success'))
     // pick relevant properties
     .map(run => ({ id: run.id, name: run.name, created_at: run.created_at }))
     // sort
@@ -46,6 +48,8 @@ export default async function ({ octokit, workflow_id, run_id }) {
   core.debug(inspect(prime))
 
   for (const run of cancellable) {
+    if (run.status === 'completed') continue
+
     core.info(`${run.name}#${run.id} => canceling`)
 
     await octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
