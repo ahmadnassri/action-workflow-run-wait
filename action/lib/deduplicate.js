@@ -29,7 +29,7 @@ export default async function ({ octokit, workflow_id, run_id }) {
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
 
   // there can only be one
-  if (cancellable.length === 1) {
+  if (cancellable.length <= 1) {
     core.info(`found no cancellable runs of workflow #${workflow_id}`)
     core.debug(inspect(cancellable.map(run => ({ id: run.id, name: run.name }))))
 
