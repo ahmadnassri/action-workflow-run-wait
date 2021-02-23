@@ -32,7 +32,7 @@ export default async function ({ token, delay, timeout, sha, ignore }) {
   core.debug(`workflow_id: ${workflow_id}`)
 
   // don't run this workflow twice for the same commit
-  await deduplicate({ octokit, workflow_id, run_id, sha })
+  await deduplicate({ octokit, workflow_id, run_id })
 
   // find all the dependencies
   const dependencies = await workflows({ octokit, ref, workflow_id })
