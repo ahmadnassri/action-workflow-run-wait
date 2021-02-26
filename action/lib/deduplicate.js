@@ -19,8 +19,6 @@ export default async function ({ octokit, workflow_id, run_id }) {
 
   // filter and sort
   const cancellable = workflow_runs
-    // filter to relevant runs
-    .filter(run => ['in_progress', 'queued', 'completed'].includes(run.status))
     // filter to only runs for the same commit
     .filter(run => run.head_sha === sha)
     // filter out unsuccessful completed runs (cancelled / failed)
