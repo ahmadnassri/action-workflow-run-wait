@@ -42,7 +42,7 @@ export default async function ({ token, delay, timeout, sha, ignore }) {
 
   if (result.length === 0) {
     core.info('no runs found for this workflow\'s dependencies')
-    process.exit(1)
+    process.exit(0)
   }
 
   const successful = ['success']
