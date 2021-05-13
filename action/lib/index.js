@@ -45,7 +45,7 @@ export default async function ({ token, delay, timeout, sha, ignore }) {
     process.exit(0)
   }
 
-  const successful = ['success']
+  const successful = ['success', 'skipped']
   if (ignore) successful.push('cancelled')
 
   while (result.find(run => !successful.includes(run.conclusion))) {
